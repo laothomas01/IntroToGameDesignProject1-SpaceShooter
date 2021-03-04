@@ -14,21 +14,21 @@ Part I Basic Functionality
 For Part 1 the basic functionality is as follows:
 - [ ] The game starts up in idle mode, waiting to receive a “spacebar”
 keyboard event to start the game.
-[] The user will be able to use either arrow keys or the mouse (both
+- [ ] The user will be able to use either arrow keys or the mouse (both
 must be supported) to move “the Player” which is a small gun
 turret in any direction in the play window (up and down, left and
 right). The gun turret’s motion is limited by the play area size. You
 need to check the bounds for that. (but turret can partially leave
 window that is acceptable).
-[] You must support rotation of the turret. You can choose to rotate the turret with a key press OR you can
+- [ ]  You must support rotation of the turret. You can choose to rotate the turret with a key press OR you can
 animate the rotation for a special effect. Your choice. The implementation must use matrix rotations as
 described below in requirements.
-[] The spacebar will be used to fire missiles from the turret. Holding the spacebar will cause the missiles to
+- [ ]  The spacebar will be used to fire missiles from the turret. Holding the spacebar will cause the missiles to
 fire automatically. The rate of fire should be adjustable internally (by a method in the class – see
 below). You will need to create a slider to adjust this rate for game playability testing.
-[] The direction of fire should be adjustable by modifying a vector. You also need to create a slider to test
+- [ ]  The direction of fire should be adjustable by modifying a vector. You also need to create a slider to test
 this feature. (These diagnostic sliders should be able to be hidden).
-[] The firing of the missiles should emit a burst sound effect of your choosing.
+- [ ]  The firing of the missiles should emit a burst sound effect of your choosing.
 The visual design of the turret, missiles and background of the playing area (image files) and the sounds
 used are up to you. You have creative control over these aspects. Please feel free to put on your game
 artist hat. You are required to create the turret image yourself.

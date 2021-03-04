@@ -1,15 +1,8 @@
 # IntroToGameDesignProject1-SpaceShooter
-SJSU - CS 134 – Game Design Programming Project 1 – Part 1 – Foundation Classes
-A Vintage 2D Shooter Arcade Game
-In this assignment (Part 1-3), you will build a vintage 2D “Shooter” style
-game that will be based on the theme of the “space invader” style games
-of the past. The game will leverage the object-oriented and graphics
-capabilities of OpenFrameworks and you will learn the basics of game
-interaction, 2D game graphics using sprites, rudimentary collision
-detection and basic animation. This assignment will be broken down into
-three (3) parts. By the end of Part 3, you will have written your own game.
-The game should be easily ported to mobile devices such as a smart phone
-or tablet. Let’s get started!
+# SJSU - CS 134 – Game Design Programming Project 1 – Part 1 – Foundation Classes
+# A Vintage 2D Shooter Arcade Game
+In this assignment (Part 1-3), you will build a vintage 2D “Shooter” style game that will be based on the theme of the “space invader” style games of the past. The game will leverage the object-oriented and graphics capabilities of OpenFrameworks and you will learn the basics of game interaction, 2D game graphics using sprites, rudimentary collision detection and basic animation. This assignment will be broken down into three (3) parts. By the end of Part 3, you will have written your own game. The game should be easily ported to mobile devices such as a smart phone or tablet. Let’s get started!
+
 Part I Basic Functionality
 For Part 1 the basic functionality is as follows:
 - [ ] The game starts up in idle mode, waiting to receive a “spacebar”

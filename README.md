@@ -12,7 +12,7 @@ The game should be easily ported to mobile devices such as a smart phone
 or tablet. Let’s get started!
 Part I Basic Functionality
 For Part 1 the basic functionality is as follows:
-[]The game starts up in idle mode, waiting to receive a “spacebar”
+- [] The game starts up in idle mode, waiting to receive a “spacebar”
 keyboard event to start the game.
 [] The user will be able to use either arrow keys or the mouse (both
 must be supported) to move “the Player” which is a small gun

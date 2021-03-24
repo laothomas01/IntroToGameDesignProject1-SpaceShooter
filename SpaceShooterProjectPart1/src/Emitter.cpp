@@ -5,32 +5,23 @@
 //Emitter takes in a sprite system and draws all the sprites from the sprite system based on its location
 Emitter::Emitter(SpriteSystem *spriteSys) {
 	sys = spriteSys;
-	lifespan = 3000;    // milliseconds
+	lifespan = 3000;    // milliseconds or 3 seconds
 	started = false;    //flag for when emitter begins
 	lastSpawned = 0;	//last time an object spawned
 	rate = 1;    // sprites/sec
 	haveChildImage = false; 
-	/*haveImage = true;*/
+	haveImage = true;
 	velocity = ofVec3f(0, -400, 0);
 	drawable = true;
 	width = 50;
 	height = 50;
+	rotation = 180.0;
 	headVect = glm::vec3(0, 0, 0);
 	fireGun = false; // firing projectiles
 	unleashMinions = true; // have the enemy Emitter send out sprites to chase our player
-	//contactDistance = 0.0;
-	//if (plasmarifle.load("soundEffects/PlasmaRifle.mp3"))
-	//{
-	//	soundLoaded = true;
-	//}
-	//else
-	//{
-	//	ofExit();
-	//}
 }
-//  Draw the Emitter if it is drawable. In many cases you would want a hidden emitter
-//
-//when you want to create an Emitter, call draw function to make it appear
+//  Draw the Emitter if it is drawable. In many cases, you would want a hidden emitter.
+//When you want to create an Emitter, call draw function to make it appear
 void Emitter::draw() {
 	//we translate the sprites and emitter after calling the draw() function
 	glm::mat4 T = getMatrix();
@@ -38,6 +29,7 @@ void Emitter::draw() {
 	ofMultMatrix(T);
 	if (drawable) {
 		if (haveImage) {
+			//center of our window
 			image.draw(-image.getWidth() / 2.0, -image.getHeight() / 2.0);
 		}
 		else {
@@ -48,7 +40,7 @@ void Emitter::draw() {
 	sys->draw();
 	ofPopMatrix();
 }
-
+//spawned from our emitter, we want to give our sprites some interesting movement
 void Emitter::move()
 {
 	for (int i = 0; i < sys->sprites.size(); i++)
@@ -56,20 +48,24 @@ void Emitter::move()
 		sys->sprites[i].trans.x = sys->sprites[i].trans.x +40;
 		//fluctuate the y value for some spraying action
 		sys->sprites[i].trans.y = sys->sprites[i].trans.y + sin(sys->sprites[i].trans.x) * 30;
-		
-		
 	}
 }
-//void Emitter::
+/*
+
+Collision detection
+
+*/
 
 //  Update the Emitter. If it has been started, spawn new sprites with
 //  initial velocity, lifespan, birthtime.
-//
+
+//launch projectiles from Emitter
 void Emitter::shoot()
 {
 	float time = ofGetElapsedTimeMillis();
 	//in milliseconds: 1000 ms = 1 sec. 10000 ms = 10 sec
 	if ((time - lastSpawned) > (1000.0 / rate)) {
+		//cout << "TIME: "<< time - lastSpawned << endl;
 		if (fireGun)
 		{
 			// spawn a new sprite
@@ -77,9 +73,7 @@ void Emitter::shoot()
 			if (haveChildImage) sprite.setImage(childImage);
 			sprite.velocity = velocity;
 			sprite.lifespan = lifespan;
-			/*sprite.setPosition(heading());*/
 			sprite.birthtime = time;
-
 			/*sprite.rotation = rotation;*/
 			sys->add(sprite);
 			lastSpawned = time;
@@ -89,35 +83,35 @@ void Emitter::shoot()
 	//helps me get rid extra projectiles so i can save memory
 	sys->update();
 }
-void Emitter::spawnEnemies()
-{
-	float time = ofGetElapsedTimeMillis();
-	//in milliseconds: 1000 ms = 1 sec. 10000 ms = 10 sec
-	
-		if ((time - lastSpawned) > (5000.0 / rate)) {
+//void Emitter::spawnEnemies()
+//{
+//	float time = ofGetElapsedTimeMillis();
+//	//in milliseconds: 1000 ms = 1 sec. 10000 ms = 10 sec
+//	
+//		if ((time - lastSpawned) > (5000.0 / rate)) {
+//
+//			// spawn a new sprite
+//
+//			Sprite enemy;
+//			if (haveChildImage) enemy.setImage(childImage);
+//			enemy.velocity = velocity;
+//			enemy.lifespan = lifespan;
+//			enemy.birthtime = time;
+//			/*sprite.rotation = rotation;*/
+//			sys->add(enemy);
+//			//plasmarifle.play();
+//			lastSpawned = time;
+//			
+//		}
+//		sys->update();
+//}
 
-			// spawn a new sprite
-
-			Sprite enemy;
-			if (haveChildImage) enemy.setImage(childImage);
-			enemy.velocity = velocity;
-			enemy.lifespan = lifespan;
-			enemy.birthtime = time;
-			/*sprite.rotation = rotation;*/
-			sys->add(enemy);
-			//plasmarifle.play();
-			lastSpawned = time;
-			
-		}
-		sys->update();
-}
 
 
 void Emitter::update() {
 	if (!started) return;
 	//when ever use presses spacebar, trigger fireGun flag to shoot
 	shoot();
-	
 }
 
 // Start/Stop the emitter.
@@ -151,8 +145,4 @@ void Emitter::setImage(ofImage img) {
 }
 void Emitter::setRate(float r) {
 	rate = r;
-}
-void Emitter::setHeader(glm::vec3 v)
-{
-	headVect = v;
 }

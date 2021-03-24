@@ -32,89 +32,88 @@ void ofApp::setup() {
 	Distance = 0.0;
 	ContactDistance = 0.0;
 	ofSetVerticalSync(true);
-
-	// create an image for sprites being spawned by emitter
-	//
-	/*if (defaultImage.load("images/Eyeball.png"))
-	{
-		imageLoaded = true;
-	}
-	if (customImage.load("images/Alien.png"))
-	{
-		imageLoaded = true;
-	}
+	/*
 	
-	if (DefaultEnemy.load("images/SpaceShip.png"))
+		load all images I want to use
+	
+	*/
+	if (defaultImage.load("images/Spaceship.png")) {
+		imageLoaded = true;
+	}
+	else
 	{
-		imageLoaded = true;
+		cout << "IMAGE CANNOT BE LOADED\n";
 	}
-
-	if (Minions.load("images/Projectile.png"))
-	{
-		imageLoaded = true;
-	}*/
-	if (defaultImage.load("images/Eyeball.png")) {
-		imageLoaded = true;
-	}
-	else {
-		ofLogFatalError("can't load image: images/SpaceShip.png");
-		ofExit();
-	}
-
-
-	if (customImage.load("images/Alien.png")) {
-		imageLoaded = true;
-	}
-	else {
-		ofLogFatalError("can't load image: images/Projectile.png");
-		ofExit();
-	}
-
-
-	if (DefaultEnemy.load("images/SpaceShip.png"))
+	if (fireBall.load("images/Projectile.png"))
 	{
 		imageLoaded = true;
 	}
 	else
 	{
-		cout << "ERROR" << endl;
+		cout << "IMAGE CANNOT BE LOADED\n";
 	}
-	if (Minions.load("images/Projectile.png"))
+	if (background.load("images/background.png")) {
+		imageLoaded = true;
+	}
+	else
+	{
+		cout << "IMAGE CANNOT BE LOADED\n";
+	}
+	if (Minions.load("images/RajTheParasite"))
 	{
 		imageLoaded = true;
 	}
 	else
 	{
-		ofExit();
+		cout << "IMAGE CANNOT BE LOADED\n";
 	}
-
-	if (background.load("images/background.jpg"))
+	if (DefaultEnemy.load("images/Eyeball.png"))
 	{
 		imageLoaded = true;
 	}
+	else
+	{
+		cout << "IMAGE CANNOT BE LOADED";
+	}
+	//load sound effects
 	if (Wobble.load("soundEffects/Wobble.mp3"))
 	{
 		soundLoaded = true;
 	}
+	else
+	{
+		cout << "CANNOT LOAD SOUND\n";
+	}
+
+	turret = new Emitter(new SpriteSystem);
+	turret->rotation = 0.0;
+	turret->setPosition(ofVec3f(ofGetWindowWidth() / 2.0, 2000 / 2.0, 0));
+	turret->drawable = true;
+	//Emitter image
+	turret->setImage(defaultImage);
+	//Emitter's sprite images
+	turret->setChildImage(fireBall);
+	//do not start yet!
+	enemySpawner = new Emitter(new SpriteSystem);
+	enemySpawner->setPosition(ofVec3f(ofGetWindowWidth() / 2.0, 2000 / 2.0, 0));
+	enemySpawner->drawable = true;
+	enemySpawner->setImage(DefaultEnemy);
+	enemySpawner->setChildImage(Minions);
+
 	
 
+	//do not start yet!
 
-	turret = new Emitter(new SpriteSystem());
-
-	turret->setPosition(ofVec3f(ofGetWindowWidth() / 2.0, ofGetWindowHeight() / 2.0, 0));
-	turret->drawable = true;
-	turret->setImage(defaultImage);
-	turret->setChildImage(customImage);
+	//start
 	turret->start();
-
-	enemySpawner = new Emitter(new SpriteSystem());
-	enemySpawner-> setPosition(ofVec3f(ofGetWindowWidth() / 2.0, ofGetWindowHeight() / 2.0, 0));
-	enemySpawner-> drawable = true;
-	enemySpawner-> setImage(DefaultEnemy);
-	enemySpawner-> setChildImage(Minions);
-	enemySpawner-> start();
-
-
+	enemySpawner->start();
+	turret->haveImage = true;
+	//emitter sprites
+	turret->haveChildImage = true;
+	enemySpawner->haveImage = true;
+	//emitter sprites
+	/*enemySpawner->haveChildImage = true;
+	*/
 	gui.setup();
 	gui.add(rate.setup("rate", 1, 1, 10));
 	gui.add(life.setup("life", 5, .1, 10));
@@ -124,108 +123,165 @@ void ofApp::setup() {
 
 //--------------------------------------------------------------
 void ofApp::update() {
+
+	
 	turret->setRate(rate);
 	turret->setLifeSpan(life * 1000); // convert to milliseconds
 	turret->setVelocity(glm::vec3(velocity->x, velocity->y, velocity->z));
-	turret->update();
-	//look for updates on enemy sprites
-	glm::vec3 initialVelocity = glm::vec3(velocity->x, velocity->y, velocity->z);
-	enemySpawner->setRate(rate);
-	enemySpawner->setLifeSpan(life * 1000); // convert to milliseconds
-	enemySpawner->setVelocity(initialVelocity);
-	enemySpawner->spawnEnemies();
-	enemySpawner->move();
+
+	
+	////look for updates on enemy sprites
+	//glm::vec3 initialVelocity = glm::vec3(velocity->x, velocity->y, velocity->z);
+	//enemySpawner->setRate(rate);
+	//enemySpawner->setLifeSpan(life * 1000); // convert to milliseconds
+	//enemySpawner->setVelocity(initialVelocity);
+	//enemySpawner->spawnEnemies();
+	//enemySpawner->move();
 
 	//look for updates on projectile position
 	//Collision detection
-
-	//BUSTED
-	for (int i = 0; i < turret->sys->sprites.size(); i++)
+	//if player's position goes beyond the coordinates of the right border
+	if (turret->trans.x > 3900)
 	{
-		cout << "SPRITE POSITION:" << turret->sys->sprites[i].trans << endl;
-		for (int i = 0; i < enemySpawner->sys->sprites.size(); i++)
-		{
-			Distance = glm::distance(turret->sys->sprites[i].trans, enemySpawner->sys->sprites[i].trans);
-			ContactDistance = turret->sys->sprites[i].height / 2 - enemySpawner->sys->sprites[i].height / 2;
-			cout << "DISTANCE:" << Distance << endl;
-			cout << "\nCONTACT DISTANCE:" << ContactDistance << endl;
-			if (Distance < ContactDistance)
-			{
-				turret->sys->sprites[i].lifespan = -1;
-				cout << "LIFESPAN OF TURRET SPRITE:" << turret->sys->sprites[i].lifespan << endl;
-				enemySpawner->sys->sprites[i].lifespan = -1;
-				cout << "\nLIFESPAN OF ENEMY SPAWN SPRITE:" << enemySpawner->sys->sprites[i].lifespan << endl;
-			}
-		}
+		//player's position will be set at the left side border's position
+		turret->setPosition(ofVec3f(-60, 1000, 0));
 	}
+	//if player's position goes beyond the coordinates of the left border
+	if (turret->trans.x < -96)
+	{
+		//player's position coordinates will be set to the coordinates of the right border
+		turret->setPosition(ofVec3f(3864,1000,0));
+	}
+	//if player goes beyond the top border's coordinates
+	if (turret->trans.y < -83)
+	{
+		//player's coordinates will be set above the bottom border's coordinates
+		turret->setPosition(ofVec3f(878, 2077, 0));
+	}
+	//if player goes beyond the bottom border's coordinates
+	if (turret->trans.y > 2149)
+	{
+		//player's position will be set to slightly below the top border's coordinates
+		turret->setPosition(ofVec3f(878.771, -34.9648, 0));
+	}
+	 /*else if (turret->trans.x < 65)
+	 {
+		 turret->setPosition(ofVec3f(, 1000, 0));
+	 }*/
+	/* if(turret->trans.y < -58.0)
+	 {
+	 
+		 turret->setPosition(ofVec3f(2000, 2089, 0));
+	 }*/
+	/* if (turret->trans.y > 2100)
+	 {
+		 turret->setPosition(ofVec3f(2000, 2100, 0));
+	 }*/
+
+
+	if (keyisDown['w'])
+	{
+		
+			turret->trans += 12 * turret->heading();
+		
+			cout << turret->trans << endl;
+	}
+	if (keyisDown['s'])
+	{
+		turret->trans -= 12 * turret->heading();
+		cout << turret->trans << endl;
+	}
+	if (keyisDown['a'])
+	{
+		turret->rotation -= 10;
+		cout << "TURRET ROTATION:" << turret->rotation << endl;
+	}
+	
+	if (keyisDown['d'])
+	{
+		turret->rotation += 10;
+		cout << "TURRET ROTATION:" << turret->rotation << endl;
+	}
+	
+	if (keyisDown[' '])
+	{
+		turret->fireGun = true;
+	}
+	
+	turret->update();
+	
 }
 //--------------------------------------------------------------
 void ofApp::draw()
 {
-	background.draw(0, 0, ofGetWindowWidth(), ofGetWindowHeight());
 	turret->draw();
-	enemySpawner->draw();
-	ofDrawLine(turret->trans, turret->trans + 1000 * heading());
-	//if not hide, draw the gui
-	if (!bHide)
-	{
-		gui.draw();
-	}
+	background.draw(0, 0, ofGetWidth(), ofGetHeight());
+	enemySpawner->draw();	
+	//background.draw(0, 0, ofGetWindowWidth(), ofGetWindowHeight());
+	//turret->draw();
+	//enemySpawner->draw();
+	ofDrawLine(turret->trans, turret->trans + 1000 * turret->heading());
+	////if not hide, draw the gui
+	//if (!bHide)
+	//{
+	//	gui.draw();
+	//}
 }
 //--------------------------------------------------------------
 void ofApp::keyPressed(int key) {
+	keyisDown[key] = true;
+	//switch (key)
+	//{
+	//case OF_KEY_UP:
 
-	switch (key)
-	{
-	case OF_KEY_UP:
+	//	//if ((turret->trans.x < ofGetWindowWidth() - 50 and turret->trans.x >= 0) and (turret->trans.y < ofGetWindowHeight() - 50 and turret->trans.y >= 0))
+	//	//{	//pos = pos + heading * 20 <- velocity
+	//	/*turret->trans += heading() * 20; cout << turret->trans << endl;*/
+	//	//thrusters.play();
+	////}
 
-		//if ((turret->trans.x < ofGetWindowWidth() - 50 and turret->trans.x >= 0) and (turret->trans.y < ofGetWindowHeight() - 50 and turret->trans.y >= 0))
-		//{	//pos = pos + heading * 20 <- velocity
-		turret->trans += heading() * 20; cout << turret->trans << endl;
-		//thrusters.play();
+	//	break;
+	//	//have a diagonal movement when two keys are pressed
+	//case OF_KEY_DOWN:
+	//	/*if ((turret->trans.x <= ofGetWindowWidth() and turret->trans.x >= 0) and (turret->trans.y <= ofGetWindowHeight() and turret->trans.y >= 0))
+	//	{*/
+	//	//turret->trans -= heading() * 20; cout << turret->trans << endl;
+	//	/*	backingup.play();*/
+	//	//}
+	//	break;
+
+	//case OF_KEY_LEFT:
+	//	//turret->rotation -= 6;	   cout << turret->rotation << endl;
+	//	break;
+	//case OF_KEY_RIGHT:
+	//	//turret->rotation += 6;	cout << turret->rotation << endl;
+	//	break;
+	//case 'b':
+	//	bHide = true;
+	//	break;
+	//case OF_KEY_TAB:
+	//	bHide = false;
+	//	break;
+	//case ' ':
+	//	//for starting the game
+	//	//turret->haveImage = true;
+	//	//turret->fireGun = true;
+	//	////cout << "Space bar is being pressed" << endl;
+	//	//float time = ofGetElapsedTimeMillis();
+	//	//if ((time - turret->lastSpawned) > (1000.0 / rate))
+	//	//{
+	//	//	Wobble.play();
+	//	//}
+
+	//	//	/*case OF_KEY_CONTROL:*/
 	//}
-
-		break;
-		//have a diagonal movement when two keys are pressed
-	case OF_KEY_DOWN:
-		/*if ((turret->trans.x <= ofGetWindowWidth() and turret->trans.x >= 0) and (turret->trans.y <= ofGetWindowHeight() and turret->trans.y >= 0))
-		{*/
-		turret->trans -= heading() * 20; cout << turret->trans << endl;
-		/*	backingup.play();*/
-		//}
-		break;
-
-	case OF_KEY_LEFT:
-		turret->rotation -= 6;	   cout << turret->rotation << endl;
-		break;
-	case OF_KEY_RIGHT:
-		turret->rotation += 6;	cout << turret->rotation << endl;
-		break;
-	case 'b':
-		bHide = true;
-		break;
-	case OF_KEY_TAB:
-		bHide = false;
-		break;
-	case ' ':
-		//for starting the game
-		turret->haveImage = true;
-		turret->fireGun = true;
-		//cout << "Space bar is being pressed" << endl;
-		float time = ofGetElapsedTimeMillis();
-		if ((time - turret->lastSpawned) > (1000.0 / rate))
-		{
-			Wobble.play();
-		}
-
-		//	/*case OF_KEY_CONTROL:*/
-	}
 
 }
 
 //--------------------------------------------------------------
 void ofApp::keyReleased(int key) {
 	turret->fireGun = false;
+	keyisDown[key] = false;
 }
 
 //--------------------------------------------------------------
@@ -304,5 +360,23 @@ Journal Log:
 -I am tired, frustrated and annoyed.
 -whatever you cannot do anything about it. no god, no prayers, no extra brain cells. you know it or you fail.
 -accept failure and move on. 
+
+What did I learn and do today?
+-I created a UML diagram to organize my thoughts
+-I got so overwhelmed by the code I had to take a large step back
+		-I commented all the functioning code out and started from square 1 again
+-I implemented multiple key inputs
+Here is an interesting discovery: 
+								-if I put the head vector function in my ofApp.h where rotation takes an Emitter->rotation, I can drag around my ship like a dog but my Emitter's sprite cannot rotate. I have a line to show where my 
+head vector is pointing. 
+								-if I put my head vector function in my Emitter.h where rotation is defined in the Emitter.h, I can move in the direction of the Emitter's head vector but I cannot rotate. 
+								Can this problem be solved?
+								Yes
+My pictures did not load last time because I forgot to set haveImage and have childImage booleans to true for my Emitter objects.
+
+
+
+3-
+
 */
 

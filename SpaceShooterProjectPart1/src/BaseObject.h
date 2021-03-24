@@ -13,7 +13,6 @@ public:
 	glm::vec3 trans, scale;
 	
 	float rotation = 180.0;
-	//glm::vec3 headVector = glm::vec3(0, 1, 0);
 	bool bSelected;
 
 	//use for something
@@ -31,10 +30,13 @@ public:
 		glm::mat4 T = transl * rot;
 		return T;
 	}
+	//to change the heading, maybe make rotation a parameter?
 	glm::vec3 heading() {
 		glm::vec3 h = glm::rotate(glm::mat4(1.0), glm::radians(rotation), glm::vec3(0, 0, 1)) * glm::vec4(0, 1, 0, 1);
 		return glm::normalize(h);
 	}
+
+
 
 
 

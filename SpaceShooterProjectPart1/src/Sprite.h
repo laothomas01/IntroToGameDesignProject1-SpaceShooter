@@ -5,7 +5,6 @@
 class Sprite : public BaseObject
 {
 public:
-
 	float speed; // pixels/sec
 	float birthtime; // elapsed time in ms
 	float lifespan; //time in ms
@@ -18,5 +17,7 @@ public:
 	void draw();
 	float age();
 	void setImage(ofImage);
-
+	/*
+	all other attributes belong to BaseObject
+	*/
 };

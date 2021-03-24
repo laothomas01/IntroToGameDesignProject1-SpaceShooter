@@ -10,3 +10,4 @@ void BaseObject::setPosition(glm::vec3 pos)
 {
 	trans = pos;
 }
+

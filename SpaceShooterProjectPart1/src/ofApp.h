@@ -22,6 +22,9 @@ public:
 	void windowResized(int w, int h);
 	void dragEvent(ofDragInfo dragInfo);
 	void gotMessage(ofMessage msg);
+	
+
+
 	SpriteSystem *sys;
 	ofSoundPlayer Wobble;
 	ofSoundPlayer thrusters;
@@ -31,37 +34,30 @@ public:
 	Emitter *enemySpawner = NULL;
 	Sprite *sprite = NULL;
 
-
 	ofImage defaultImage;
-	ofImage customImage;
+	ofImage fireBall;
 	ofImage background;
 	ofImage Minions;
 	ofImage DefaultEnemy;
 
-
 	glm::vec3 mouse_last;
+
 	bool imageLoaded;
 	bool soundLoaded;
+	bool keyisDown[255];
 	bool bHide;
 	bool dead;
 	float Distance;
 	float ContactDistance;
-	map<int, bool> keymap;
-
+	
 	ofxFloatSlider rate;
 	ofxFloatSlider life;
 	ofxVec3Slider velocity;
 	ofxLabel screenSize;
 	ofxVec3Slider headVect;
-
-
-	ofxPanel gui;
-
+	ofxPanel gui; 
 	glm::vec3 heading() {
 		glm::vec3 h = glm::rotate(glm::mat4(1.0), glm::radians(turret->rotation), glm::vec3(0, 0, 1)) * glm::vec4(0, 1, 0, 1);
 		return glm::normalize(h);
 	}
-
-
-
-};
+}; 

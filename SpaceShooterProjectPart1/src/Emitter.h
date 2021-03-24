@@ -1,6 +1,9 @@
 #pragma once
 #include "BaseObject.h"
 #include "SpriteSystem.h"
+/*
+Our object that we will use to create sprites
+*/
 class Emitter : public BaseObject {
 public:
 	Emitter(SpriteSystem *);
@@ -25,7 +28,7 @@ public:
 	SpriteSystem *enemySpawnerSys;
 	float rate;
 	//float contactDistance;
-	ofVec3f velocity;
+	ofVec3f velocity;	
 	glm::vec3 headVect;
 	float lifespan;
 	bool started;
@@ -38,8 +41,9 @@ public:
 	bool haveImage;
 	bool fireGun;
 	bool soundLoaded;
-
 	bool unleashMinions;
 	float width, height;
+
+	
 
 };

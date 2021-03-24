@@ -12,7 +12,6 @@ Sprite::Sprite()
 	height = 80;
 }
 // Return a sprite's age in milliseconds
-//
 float Sprite::age() {
 	//in-game time - sprite's birthtime
 	return (ofGetElapsedTimeMillis() - birthtime);

@@ -32,13 +32,13 @@ public:
 	ofSoundPlayer recharge;
 	Emitter *turret = NULL;
 	Emitter *enemySpawner = NULL;
-	Sprite *sprite = NULL;
+
 
 	ofImage defaultImage;
 	ofImage fireBall;
-	ofImage background;
 	ofImage Minions;
 	ofImage DefaultEnemy;
+	ofImage background;
 
 	glm::vec3 mouse_last;
 
@@ -60,4 +60,5 @@ public:
 		glm::vec3 h = glm::rotate(glm::mat4(1.0), glm::radians(turret->rotation), glm::vec3(0, 0, 1)) * glm::vec4(0, 1, 0, 1);
 		return glm::normalize(h);
 	}
+
 }; 

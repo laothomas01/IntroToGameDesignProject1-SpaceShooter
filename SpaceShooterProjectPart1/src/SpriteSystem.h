@@ -11,4 +11,5 @@ public:
 	//dynamic array for storing sprites
 	vector<Sprite> sprites;
 
+
 };

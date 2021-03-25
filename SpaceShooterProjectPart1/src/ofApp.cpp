@@ -37,6 +37,13 @@ void ofApp::setup() {
 		load all images I want to use
 	
 	*/
+	if (background.load("images/Space.png")) {
+		imageLoaded = true;
+	}
+	else
+	{
+		cout << "BACKGROUND IMAGE CANNOT BE LOADED\n";
+	}
 	if (defaultImage.load("images/Spaceship.png")) {
 		imageLoaded = true;
 	}
@@ -52,21 +59,15 @@ void ofApp::setup() {
 	{
 		cout << "IMAGE CANNOT BE LOADED\n";
 	}
-	if (background.load("images/background.png")) {
-		imageLoaded = true;
-	}
-	else
-	{
-		cout << "IMAGE CANNOT BE LOADED\n";
-	}
-	if (Minions.load("images/RajTheParasite"))
+	
+	/*if (Minions.load("images/RajTheParasite"))
 	{
 		imageLoaded = true;
 	}
 	else
 	{
 		cout << "IMAGE CANNOT BE LOADED\n";
-	}
+	}*/
 	if (DefaultEnemy.load("images/Eyeball.png"))
 	{
 		imageLoaded = true;
@@ -100,17 +101,17 @@ void ofApp::setup() {
 	enemySpawner->setImage(DefaultEnemy);
 	enemySpawner->setChildImage(Minions);
 
-	
+	turret->haveImage = true;
+	//emitter sprites
+	turret->haveChildImage = true;
+	enemySpawner->haveImage = true;
 
 	//do not start yet!
 
 	//start
 	turret->start();
 	enemySpawner->start();
-	turret->haveImage = true;
-	//emitter sprites
-	turret->haveChildImage = true;
-	enemySpawner->haveImage = true;
+	
 	//emitter sprites
 	/*enemySpawner->haveChildImage = true;
 	*/
@@ -199,7 +200,7 @@ void ofApp::update() {
 	
 	if (keyisDown['d'])
 	{
-		turret->rotation += 10;
+		turret->rotation += 12;
 		cout << "TURRET ROTATION:" << turret->rotation << endl;
 	}
 	
@@ -214,10 +215,9 @@ void ofApp::update() {
 //--------------------------------------------------------------
 void ofApp::draw()
 {
-	turret->draw();
 	background.draw(0, 0, ofGetWidth(), ofGetHeight());
+	turret->draw();
 	enemySpawner->draw();	
-	//background.draw(0, 0, ofGetWindowWidth(), ofGetWindowHeight());
 	//turret->draw();
 	//enemySpawner->draw();
 	ofDrawLine(turret->trans, turret->trans + 1000 * turret->heading());

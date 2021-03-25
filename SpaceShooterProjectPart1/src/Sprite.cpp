@@ -10,6 +10,8 @@ Sprite::Sprite()
 	name = "UnamedSprite";
 	width = 60;
 	height = 80;
+	
+	
 }
 // Return a sprite's age in milliseconds
 float Sprite::age() {
@@ -44,3 +46,5 @@ void Sprite::draw() {
 		ofDrawRectangle(-width / 2.0 + trans.x, -height / 2.0 + trans.y, width, height);
 	}
 }
+
+

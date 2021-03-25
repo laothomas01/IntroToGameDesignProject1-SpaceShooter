@@ -25,8 +25,15 @@ void SpriteSystem::update() {
 	//initial sprite movement
 	for (int i = 0; i < sprites.size(); i++)
 	{
+	
+
 		//new position	=	old position 	- position based on rotation,matrix transformation		how many pixels to move per frame
+		
+												//possibly a problem with our sprite's header
 		sprites[i].trans = sprites[i].trans - sprites[i].heading() * sprites[i].velocity / ofGetFrameRate();
+
+		
+	
 	}
 
 	// check which sprites have exceed their lifespan and delete

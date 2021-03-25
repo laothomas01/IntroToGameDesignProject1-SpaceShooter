@@ -17,7 +17,6 @@ public:
 	void setRate(float);
 	void update();
 	void shoot();
-	void setHeader(glm::vec3);
 	void spawnEnemies();
 	void move();
 	
@@ -29,7 +28,6 @@ public:
 	float rate;
 	//float contactDistance;
 	ofVec3f velocity;	
-	glm::vec3 headVect;
 	float lifespan;
 	bool started;
 	float lastSpawned;

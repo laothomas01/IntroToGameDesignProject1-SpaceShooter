@@ -35,12 +35,4 @@ public:
 		glm::vec3 h = glm::rotate(glm::mat4(1.0), glm::radians(rotation), glm::vec3(0, 0, 1)) * glm::vec4(0, 1, 0, 1);
 		return glm::normalize(h);
 	}
-
-
-
-
-
-
-
-
 };

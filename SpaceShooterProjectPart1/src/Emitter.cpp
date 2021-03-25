@@ -16,7 +16,6 @@ Emitter::Emitter(SpriteSystem *spriteSys) {
 	width = 50;
 	height = 50;
 	rotation = 180.0;
-	headVect = glm::vec3(0, 0, 0);
 	fireGun = false; // firing projectiles
 	unleashMinions = true; // have the enemy Emitter send out sprites to chase our player
 }
@@ -74,6 +73,7 @@ void Emitter::shoot()
 			sprite.velocity = velocity;
 			sprite.lifespan = lifespan;
 			sprite.birthtime = time;
+			cout << "SPRITE HEADING:" << sprite.heading() << endl;
 			/*sprite.rotation = rotation;*/
 			sys->add(sprite);
 			lastSpawned = time;
@@ -83,28 +83,28 @@ void Emitter::shoot()
 	//helps me get rid extra projectiles so i can save memory
 	sys->update();
 }
-//void Emitter::spawnEnemies()
-//{
-//	float time = ofGetElapsedTimeMillis();
-//	//in milliseconds: 1000 ms = 1 sec. 10000 ms = 10 sec
-//	
-//		if ((time - lastSpawned) > (5000.0 / rate)) {
-//
-//			// spawn a new sprite
-//
-//			Sprite enemy;
-//			if (haveChildImage) enemy.setImage(childImage);
-//			enemy.velocity = velocity;
-//			enemy.lifespan = lifespan;
-//			enemy.birthtime = time;
-//			/*sprite.rotation = rotation;*/
-//			sys->add(enemy);
-//			//plasmarifle.play();
-//			lastSpawned = time;
-//			
-//		}
-//		sys->update();
-//}
+void Emitter::spawnEnemies()
+{
+	float time = ofGetElapsedTimeMillis();
+	//in milliseconds: 1000 ms = 1 sec. 10000 ms = 10 sec
+	
+		if ((time - lastSpawned) > (5000.0 / rate)) {
+
+			// spawn a new sprite
+
+			Sprite enemy;
+			if (haveChildImage) enemy.setImage(childImage);
+			enemy.velocity = velocity;
+			enemy.lifespan = lifespan;
+			enemy.birthtime = time;
+			/*sprite.rotation = rotation;*/
+			sys->add(enemy);
+			//plasmarifle.play();
+			lastSpawned = time;
+			
+		}
+		sys->update();
+}
 
 
 
